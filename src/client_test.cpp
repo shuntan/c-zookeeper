@@ -35,7 +35,7 @@ private:
  */
 extern "C" int main()
 {
-	zookeeper::CZookeeperHelper zk("10.143.130.28:2181");
+	zookeeper::CZookeeperHelper zk("127.0.0.1:2181");
 	if(zk.connect())
 	{
 		std::string ip;
