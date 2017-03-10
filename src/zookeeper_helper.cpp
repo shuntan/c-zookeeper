@@ -9,24 +9,25 @@
 
 namespace zookeeper{
 
-static FILE *open_logfile(const char* log_name) {
-  char name[1024];
-  strcpy(name, "TEST-");
-  strncpy(name + 5, log_name, sizeof(name) - 5);
+static FILE *open_logfile(const char* log_name) 
+{
+    char name[1024];
+    strcpy(name, "TEST-");
+    strncpy(name + 5, log_name, sizeof(name) - 5);
 #ifdef THREADED
-  strcpy(name + strlen(name), "-mt.txt");
+    strcpy(name + strlen(name), "-mt.txt");
 #else
-  strcpy(name + strlen(name), "-st.txt");
+    strcpy(name + strlen(name), "-st.txt");
 #endif
 
-  FILE *logfile = fopen(name, "a");
+    FILE *logfile = fopen(name, "a");
+    if (logfile == 0)
+    {
+        fprintf(stderr, "Can't open log file %s!\n", name);
+        return 0;
+    }
 
-  if (logfile == 0) {
-    fprintf(stderr, "Can't open log file %s!\n", name);
-    return 0;
-  }
-
-  return logfile;
+    return logfile;
 }
 
 void async_completion(int errcode, ACL_vector *acl,Stat *stat, const void *data)
@@ -68,7 +69,7 @@ void async_completion(int errcode, const void *data)
 
 void active_watcher(zhandle_t *zh, int type, int state, const char *path,void* ctx)
 {
-	if(zh == NULL || ctx == NULL) return;
+    if(zh == NULL || ctx == NULL) return;
 	CWatcherAction* action=(CWatcherAction*)ctx;
 
 	// 先判断  Zookeeper 连接状态
