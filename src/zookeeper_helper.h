@@ -45,13 +45,11 @@ public:
     CAsyncCompletion();
     virtual ~CAsyncCompletion();
     virtual void acl_compl(int errcode, ACL_vector *acls, Stat *stat);
-    virtual void data_compl(int errcode, const char *value, int len,
-            const Stat *stat);
+    virtual void data_compl(int errcode, const char *value, int len,const Stat *stat);
     virtual void stat_compl(int errcode, const Stat *stat);
     virtual void string_compl(int errcode, const char *value);
     virtual void strings_compl(int errcode, const String_vector *strings);
-    virtual void strings_compl(int errcode, const String_vector *strings,
-            const Stat *stat);
+    virtual void strings_compl(int errcode, const String_vector *strings,const Stat *stat);
     virtual void void_compl(int errcode);
 
 public:
