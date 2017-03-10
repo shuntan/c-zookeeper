@@ -251,9 +251,9 @@ private:
 	uint16_t          m_timeout;                // 默认接收zookeeper服务端的超时时间(秒s)
 	uint16_t          m_default_buffer_length;  // 默认创建buffer数据缓存的大小
 	clientid_t        m_client_id;              // 连接zookeeper的客户端ID
-    zhandle_t*        m_zk_handle;              // zookeeper的指针句柄
+    	zhandle_t*        m_zk_handle;              // zookeeper的指针句柄
 	CWatcherAction*   m_watcher_init;           // 监视连接是否成功
-    FILE*             m_log_file;               // 开启日志的文件流?
+    	FILE*             m_log_file;               // 开启日志的文件流?
 };
 
 }
