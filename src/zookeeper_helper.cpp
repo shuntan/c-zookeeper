@@ -9,7 +9,11 @@
 
 namespace zookeeper {
 
+<<<<<<< HEAD
 static FILE *open_logfile(const char* log_name)
+=======
+static FILE *open_logfile(const char* log_name) 
+>>>>>>> origin/master
 {
     char name[1024];
     strcpy(name, "TEST-");
@@ -21,8 +25,13 @@ static FILE *open_logfile(const char* log_name)
 #endif
 
     FILE *logfile = fopen(name, "a");
+<<<<<<< HEAD
 
     if (logfile == 0) {
+=======
+    if (logfile == 0)
+    {
+>>>>>>> origin/master
         fprintf(stderr, "Can't open log file %s!\n", name);
         return 0;
     }
@@ -73,11 +82,18 @@ void async_completion(int errcode, const void *data)
     static_cast<CAsyncCompletion*>((void*) data)->void_compl(errcode);
 }
 
+<<<<<<< HEAD
 void active_watcher(zhandle_t *zh, int type, int state, const char *path,
         void* ctx) {
     if (zh == NULL || ctx == NULL)
         return;
     CWatcherAction* action = (CWatcherAction*) ctx;
+=======
+void active_watcher(zhandle_t *zh, int type, int state, const char *path,void* ctx)
+{
+    if(zh == NULL || ctx == NULL) return;
+	CWatcherAction* action=(CWatcherAction*)ctx;
+>>>>>>> origin/master
 
     // 先判断  Zookeeper 连接状态
     if (state == ZOO_EXPIRED_SESSION_STATE)
