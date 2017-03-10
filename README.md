@@ -4,7 +4,8 @@ ZooKeeper是一个分布式的，开放源码的分布式应用程序协调服�
 
  提供了简单的c++接口方便开发者使用：
  
-bool zookeeper_create(const std::string& path, const std::string& value, std::string* path_value, const ACL_vector& acl_entries = ZOO_OPEN_ACL_UNSAFE, int flags = ZOO_EPHEMERAL);
+
+	bool zookeeper_create(const std::string& path, const std::string& value, std::string* path_value, const ACL_vector& acl_entries = ZOO_OPEN_ACL_UNSAFE, int flags = ZOO_EPHEMERAL);
 	bool zookeeper_create(const std::string& path, const std::string& value, CAsyncCompletion* completion, const ACL_vector& acl_entries = ZOO_OPEN_ACL_UNSAFE, int flags = ZOO_EPHEMERAL);
 
 	bool zookeeper_set(const std::string& path, const std::string& value, int version = -1);
