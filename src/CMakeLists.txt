@@ -27,6 +27,9 @@ add_library(zookeeper_helper STATIC ${ZOOKEEPER_SRC})
 add_executable(client_test client_test.cpp)
 target_link_libraries(client_test libzookeeper_helper.a libzookeeper_mt.a)    
 
+add_executable(configure_test configure_test.cpp)
+target_link_libraries(configure_test libzookeeper_helper.a libzookeeper_mt.a)  
+
 # 设置依赖关系：hbase_client_helper 库需要最先被编译
 ADD_DEPENDENCIES(client_test zookeeper_helper)
 

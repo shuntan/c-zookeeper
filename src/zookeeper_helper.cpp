@@ -289,7 +289,11 @@ bool CZookeeperHelper::connect()
     while (!m_watcher_init->is_connected())
     {
         if (try_times > 10)
+        {
+            m_last_error = "(not error) no server responses to process";
+            m_last_errorcode = ZNOTHING;
             return false;
+        }
 
         usleep(100);
         try_times++;
@@ -317,7 +321,11 @@ bool CZookeeperHelper::reconncet()
     while (!m_watcher_init->is_connected())
     {
         if (try_times > 10)
+        {
+            m_last_error = "(not error) no server responses to process";
+            m_last_errorcode = ZNOTHING;
             return false;
+        }
 
         usleep(100);
         try_times++;

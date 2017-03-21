@@ -45,11 +45,11 @@ public:
     CAsyncCompletion();
     virtual ~CAsyncCompletion();
     virtual void acl_compl(int errcode, ACL_vector *acls, Stat *stat);
-    virtual void data_compl(int errcode, const char *value, int len,const Stat *stat);
+    virtual void data_compl(int errcode, const char *value, int len, const Stat *stat);
     virtual void stat_compl(int errcode, const Stat *stat);
     virtual void string_compl(int errcode, const char *value);
     virtual void strings_compl(int errcode, const String_vector *strings);
-    virtual void strings_compl(int errcode, const String_vector *strings,const Stat *stat);
+    virtual void strings_compl(int errcode, const String_vector *strings, const Stat *stat);
     virtual void void_compl(int errcode);
 
 public:
@@ -252,37 +252,37 @@ public:
 
     // 基本操作API,上为SYNC,下为ASYNC
     bool zookeeper_create(const std::string& path, const std::string& value, std::string* path_value, const ACL_vector& acl_entries = ZOO_OPEN_ACL_UNSAFE, int flags = ZOO_EPHEMERAL);
-    bool zookeeper_create(const std::string& path, const std::string& value,CAsyncCompletion* completion, const ACL_vector& acl_entries = ZOO_OPEN_ACL_UNSAFE, int flags = ZOO_EPHEMERAL);
+    bool zookeeper_create(const std::string& path, const std::string& value, CAsyncCompletion* completion, const ACL_vector& acl_entries = ZOO_OPEN_ACL_UNSAFE, int flags = ZOO_EPHEMERAL);
 
-    bool zookeeper_set(const std::string& path, const std::string& value,int version = -1);
-    bool zookeeper_set(const std::string& path, const std::string& value,CAsyncCompletion* completion, int version = -1);
+    bool zookeeper_set(const std::string& path, const std::string& value, int version = -1);
+    bool zookeeper_set(const std::string& path, const std::string& value, CAsyncCompletion* completion, int version = -1);
 
     bool zookeeper_delete(const std::string& path, int version = -1);
-    bool zookeeper_delete(const std::string& path, CAsyncCompletion* completion,int version = -1);
+    bool zookeeper_delete(const std::string& path, CAsyncCompletion* completion, int version = -1);
 
     bool zookeeper_exists(const std::string& path,CWatcherAction* watcher_action = NULL, Stat* stat = NULL);
-    bool zookeeper_exists(const std::string& path, CAsyncCompletion* completion,CWatcherAction* watcher_action = NULL);
+    bool zookeeper_exists(const std::string& path, CAsyncCompletion* completion, CWatcherAction* watcher_action = NULL);
 
     bool zookeeper_get(const std::string& path, std::string* value,CWatcherAction* watcher_action = NULL, Stat* stat = NULL);
-    bool zookeeper_get(const std::string& path, CAsyncCompletion* completion,CWatcherAction* watcher_action = NULL);
+    bool zookeeper_get(const std::string& path, CAsyncCompletion* completion, CWatcherAction* watcher_action = NULL);
 
-    bool zookeeper_get_children(const std::string& path,std::vector<std::string>* childrens,CWatcherAction* watcher_action = NULL, Stat* stat = NULL);
+    bool zookeeper_get_children(const std::string& path,std::vector<std::string>* childrens, CWatcherAction* watcher_action = NULL, Stat* stat = NULL);
     bool zookeeper_get_children(const std::string& path,CAsyncCompletion* completion, CWatcherAction* watcher_action = NULL);
 
-    bool zookeeper_get_acl(const std::string& path, std::vector<ACL>* acls,Stat* stat = NULL);
-    bool zookeeper_get_acl(const std::string& path,CAsyncCompletion* completion);
+    bool zookeeper_get_acl(const std::string& path, std::vector<ACL>* acls, Stat* stat = NULL);
+    bool zookeeper_get_acl(const std::string& path, CAsyncCompletion* completion);
 
-    bool zookeeper_set_acl(const std::string& path,const std::vector<ACL>& acls, int version = -1);
-    bool zookeeper_set_acl(const std::string& path,const std::vector<ACL>& acls, CAsyncCompletion* completion,int version = -1);
+    bool zookeeper_set_acl(const std::string& path, const std::vector<ACL>& acls, int version = -1);
+    bool zookeeper_set_acl(const std::string& path, const std::vector<ACL>& acls, CAsyncCompletion* completion, int version = -1);
 
     // 复合原子操作API
-    STOption zookeeper_create_op_init(const std::string& path,const std::string& value, const ACL_vector& acl_entries =ZOO_OPEN_ACL_UNSAFE, int flags = ZOO_EPHEMERAL);
-    STOption zookeeper_set_op_init(const std::string& path,const std::string& value, int version = -1);
+    STOption zookeeper_create_op_init(const std::string& path, const std::string& value, const ACL_vector& acl_entries =ZOO_OPEN_ACL_UNSAFE, int flags = ZOO_EPHEMERAL);
+    STOption zookeeper_set_op_init(const std::string& path, const std::string& value, int version = -1);
     STOption zookeeper_delete_op_init(const std::string& path,int version = -1);
     STOption zookeeper_check_op_init(const std::string& path, int version = -1);
 
-    bool zookeeper_multi(const std::vector<STOption>& options,std::vector<STResult>& results);
-    bool zookeeper_multi(const std::vector<STOption>& options,CAsyncCompletion* completion, std::vector<STResult>& results);
+    bool zookeeper_multi(const std::vector<STOption>& options, std::vector<STResult>& results);
+    bool zookeeper_multi(const std::vector<STOption>& options, CAsyncCompletion* completion, std::vector<STResult>& results);
 
 private:
     int m_last_errorcode;              // 最近一次的错误码
