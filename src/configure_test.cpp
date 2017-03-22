@@ -7,6 +7,15 @@
 #include <stdio.h>
 #include "zookeeper_helper.h"
 
+/*
+ * 测试zookeeper配置同步的问题
+ * CConfigureZkRead类为读配置类,用于监视配置变化而发生的运行变化。
+ * CConfigureZkWrite类为写配置类，定时修改公共的配置信息,用于触发C端的监视变化。
+ * 使用方法:可以在本机运行俩个读和写程式 ./cofigure_test read (and) ./cofigure_test write
+ */
+
+const char * g_hosts = "10.143.130.31:2181";
+
 class CConfigureZkRead: public zookeeper::CWatcherAction
 {
 public:
@@ -22,9 +31,9 @@ public:
     virtual void on_nodevalue_changed(zhandle_t*, const char* path)
     {
         //printf("on_nodevalue_changed\n");
-        clear();
         get(_config);
         printf("config changed !\n");
+        clear();
     }
 
     virtual void on_node_deleted(zhandle_t*, const char* path)
@@ -73,7 +82,7 @@ bool CConfigureZkRead::get(std::string& config)
 {
     if(_zk == NULL)
     {
-        _zk = new zookeeper::CZookeeperHelper("10.143.130.31:2181");
+        _zk = new zookeeper::CZookeeperHelper(g_hosts);
     }
 
     if(_zk->connect())
@@ -141,7 +150,7 @@ bool CConfigureZkWrite::set(const std::string& config)
 {
     if(_zk == NULL)
     {
-        _zk = new zookeeper::CZookeeperHelper("10.143.130.31:2181");
+        _zk = new zookeeper::CZookeeperHelper(g_hosts);
     }
 
     if(_zk->connect())

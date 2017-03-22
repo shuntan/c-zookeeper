@@ -4,16 +4,22 @@
  *  Created on: 2017年2月28日, Tencent Inc.
  *      Author: ShunTan
  */
+//主备切换  Master switch
+/*
+ * 本例子为了测试基于zookeeper的主备切换功能,本机同时开启俩个程式即可看到效果。
+ * zookeeper还可应用于负载均衡,配置同步。等各种场景。
+ */
 
 #include "zookeeper_helper.h"
 
-class CExistsWatcher: public zookeeper::CWatcherAction {
+const char * g_hosts = "10.143.130.31:2181";
+
+class CExistsWatcher: public zookeeper::CWatcherAction
+{
 public:
-    CExistsWatcher(zookeeper::CZookeeperHelper* zookeeper_helper) :
-            m_is_master(false)
+    CExistsWatcher(zookeeper::CZookeeperHelper* zookeeper_helper) :m_is_master(false)
     {
         m_zookeeper_helper = zookeeper_helper;
-
     }
 
 public:
@@ -23,6 +29,23 @@ public:
         m_zookeeper_helper->zookeeper_create(path, "shit", &value_path);
         printf("Now, Im' the master \n");
         m_is_master = true;
+        clear();
+    }
+
+    void run()
+    {
+        while(true)
+        {
+            if(!is_triggered())
+            {
+                printf("waiting for ....\n");
+                sleep(10);
+                continue;
+            }
+
+            printf("working ....\n");
+            sleep(1);
+        }
     }
 
 private:
@@ -30,20 +53,26 @@ private:
     zookeeper::CZookeeperHelper* m_zookeeper_helper;
 };
 
-/*
- * 本例子为了测试基于zookeeper的主备切换功能,本机同时开启俩个程式即可看到效果。
- * zookeeper还可应用于负载均衡,配置同步。等各种场景。
- */
-extern "C" int main() {
-    zookeeper::CZookeeperHelper zk("127.0.0.1:2181");
+class CExistCompletion: public zookeeper::CAsyncCompletion
+{
+    virtual void stat_compl(int errcode, const Stat *stat)
+    {
+        printf("exist async respond success! \n");
+    }
+};
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+
+extern "C" int main()
+{
+    zookeeper::CZookeeperHelper zk(g_hosts);
     if (zk.connect())
     {
         std::string ip;
         uint16_t port;
 
         if (zk.get_zookeeper_host(&ip, &port))
-            printf("client:(%lld)(%s,%d) connect to zookeeper success!\n",
-                    zk.get_zookeeper_clientid(), ip.c_str(), port);
+            printf("client:(%lld)(%s,%d) connect to zookeeper success!\n",zk.get_zookeeper_clientid(), ip.c_str(), port);
     }
     else
     {
@@ -51,6 +80,7 @@ extern "C" int main() {
     }
 
     // TEST MULTI
+    // 第一次进入确定主备关系
     std::vector<zookeeper::STOption_t> ops;
     std::vector<zookeeper::STResult_t> results;
     ops.push_back(zk.zookeeper_create_op_init("/ShunTan", "shit"));
@@ -64,8 +94,7 @@ extern "C" int main() {
     }
     else
     {
-        printf("create node[%s] success, Im' the master. \n",
-                results[0].value.c_str());
+        printf("create node[%s] success, Im' the master. \n",results[0].value.c_str());
     }
 
     /*
@@ -84,25 +113,16 @@ extern "C" int main() {
      }
      */
 
+    // TEST ASYNC
     CExistsWatcher exist_watcher(&zk);
     zookeeper::CAsyncCompletion async_completion;
     if (!zk.zookeeper_exists("/ShunTan", &async_completion, &exist_watcher))
     {
         printf("error:%s\n", zk.get_last_error().c_str());
     }
-    else
-    {
-        while (!async_completion.is_triggered())
-        {
-            usleep(100);
-        }
-        //printf("async respond success! \n");
-    }
 
-    while (!exist_watcher.is_triggered())
-    {
-        usleep(100);
-    }
+    // 模拟程序运行/空转
+    exist_watcher.run();
 
     return 0;
 }

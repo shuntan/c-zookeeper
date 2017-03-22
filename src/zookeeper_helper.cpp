@@ -516,7 +516,8 @@ bool CZookeeperHelper::zookeeper_delete(const std::string& path, int version)
     if (ZOK == errcode)
     {
         return true;
-    } else
+    }
+    else
     {
         m_last_error = zerror(errcode);
         m_last_errorcode = errcode;
@@ -942,13 +943,15 @@ bool CZookeeperHelper::zookeeper_multi(const std::vector<STOption>& options,
     {
         if (ops_arrary[i].type == ZOO_CREATE_OP)
         {
-            results[i].value = ops_results_array[i].value;
+            if(ZOK == errcode)
+                results[i].value = ops_results_array[i].value;
             delete[] ops_arrary[i].create_op.buf;
         }
 
         if (ops_arrary[i].type == ZOO_SETDATA_OP)
         {
-            results[i].stat = *(ops_results_array[i].stat);
+            if(ZOK == errcode)
+                results[i].stat = *(ops_results_array[i].stat);
             delete ops_arrary[i].set_op.stat;
         }
 
@@ -1037,13 +1040,15 @@ bool CZookeeperHelper::zookeeper_multi(const std::vector<STOption>& options,
     {
         if (ops_arrary[i].type == ZOO_CREATE_OP)
         {
-            results[i].value = ops_results_array[i].value;
+            if(ZOK == errcode)
+                results[i].value = ops_results_array[i].value;
             delete[] ops_arrary[i].create_op.buf;
         }
 
         if (ops_arrary[i].type == ZOO_SETDATA_OP)
         {
-            results[i].stat = *(ops_results_array[i].stat);
+            if(ZOK == errcode)
+                results[i].stat = *(ops_results_array[i].stat);
             delete ops_arrary[i].set_op.stat;
         }
 

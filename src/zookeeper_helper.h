@@ -25,12 +25,12 @@ namespace zookeeper {
  * 监视回调函数声明,无需直接使用,直接被类CWatcherAction回调。
  */
 class CAsyncCompletion;
-inline void async_completion(int errcode, ACL_vector *acls, Stat *stat,const void *data);
-inline void async_completion(int errcode, const char *value, int len,const Stat *stat, const void *data);
+inline void async_completion(int errcode, ACL_vector *acls, Stat *stat, const void *data);
+inline void async_completion(int errcode, const char *value, int len, const Stat *stat, const void *data);
 inline void async_completion(int errcode, const Stat *stat, const void *data);
 inline void async_completion(int errcode, const char *value, const void *data);
-inline void async_completion(int errcode, const String_vector *strings,const void *data);
-inline void async_completion(int errcode, const String_vector *strings,const Stat *stat, const void *data);
+inline void async_completion(int errcode, const String_vector *strings, const void *data);
+inline void async_completion(int errcode, const String_vector *strings, const Stat *stat, const void *data);
 inline void async_completion(int errcode, const void *data);
 class CWatcherAction;
 inline void active_watcher(zhandle_t *zh, int type, int state, const char *path,void* ctx);
@@ -83,6 +83,7 @@ class CWatcherAction
 public:
     CWatcherAction() :m_connected(false), m_triggered(false)
     {
+
     }
     virtual ~CWatcherAction()
     {
@@ -92,38 +93,49 @@ public:
     // 连接状态
     virtual void on_session_expired(zhandle_t*)
     {
+
     }
     virtual void on_connection_established(zhandle_t*)
     {
+
     }
     virtual void on_connection_lost(zhandle_t*)
     {
+
     }
     virtual void on_associating_refuse(zhandle_t*)
     {
+
     }
     virtual void on_auth_failed(zhandle_t*)
     {
+
     }
 
     // 监视类型变化
     virtual void on_session_lost(zhandle_t*)
     {
+
     }
     virtual void on_node_created(zhandle_t*, const char* path)
     {
+
     }
     virtual void on_nodevalue_changed(zhandle_t*, const char* path)
     {
+
     }
     virtual void on_node_deleted(zhandle_t*, const char* path)
     {
+
     }
     virtual void on_child_changed(zhandle_t*, const char* path)
     {
+
     }
     virtual void on_watching_removed(zhandle_t*)
     {
+
     }
 
 public:
